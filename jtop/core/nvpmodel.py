@@ -76,6 +76,8 @@ def nvpmodel_query():
         raise JtopException("nvpmodel doesn't exist")
     except Command.CommandException:
         raise JtopException("nvpmodel command unavailable")
+    except Exception as e:
+        raise JtopException("nvpmodel: {}".format(e))
     # Extract lines
     for idx, line in enumerate(lines):
         # Search configuration NVPmodel
@@ -444,6 +446,10 @@ class NVPModelService(object):
         except (OSError, Command.CommandException):
             self._is_nvpmodel = False
             logger.warning("nvpmodel not available")
+        except Exception as e:
+            self._is_nvpmodel = False
+            logger.warning("nvpmodel not available. {}".format(e))
+
 
     def exists(self):
         return self._is_nvpmodel
